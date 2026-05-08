@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #eef2ff;
+}
+
+.dark body {
+  background: #050816;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(14, 165, 233, 0.18), transparent 32%),
+    radial-gradient(circle at 85% 0%, rgba(244, 63, 94, 0.12), transparent 28%),
+    linear-gradient(135deg, rgba(255,255,255,0.94), rgba(226,232,240,0.9));
+}
+
+.dark body::before {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(14, 165, 233, 0.22), transparent 32%),
+    radial-gradient(circle at 78% 5%, rgba(34, 197, 94, 0.12), transparent 24%),
+    linear-gradient(135deg, #050816, #0f172a 48%, #111827);
+}
+
+.glass-panel {
+  @apply border border-white/50 bg-white/70 shadow-panel backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/55;
+}
+
+.control {
+  @apply rounded-xl border border-slate-200/80 bg-white/75 px-3 py-2 text-sm text-slate-700 outline-none transition focus:border-orbit focus:ring-2 focus:ring-orbit/20 dark:border-white/10 dark:bg-white/5 dark:text-slate-100;
+}
+
+.button-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-2 text-sm font-semibold text-white shadow-glow transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orbit/40 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200;
+}
+
+.button-soft {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white/70 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white focus:outline-none focus:ring-2 focus:ring-orbit/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:hover:bg-white/10;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #0f172a;
+}
+
+.toast-shell {
+  @apply border border-white/20 bg-white/90 text-slate-900 shadow-panel backdrop-blur-xl dark:bg-slate-950/90 dark:text-white;
+}
+
+.iss-marker {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f59e0b, #0ea5e9);
+  box-shadow: 0 0 30px rgba(14, 165, 233, 0.65);
+  position: relative;
+}
+
+.iss-marker::before,
+.iss-marker::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  border: 2px solid rgba(14, 165, 233, 0.45);
+  animation: pulseRing 1.8s ease-out infinite;
+}
+
+.iss-marker::after {
+  animation-delay: 0.55s;
+}
+
+.skeleton {
+  @apply relative overflow-hidden rounded-2xl bg-slate-200/70 dark:bg-white/10;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: shimmer 1.8s infinite;
+}
