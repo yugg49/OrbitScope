@@ -3,11 +3,23 @@ import apiClient from './apiClient';
 export async function askDashboardAi({ question, context }) {
   const payload = { question, context };
   try {
-    const { data } = await apiClient.post('/api/chat', payload);
-    return data.answer || getLocalDashboardAnswer(question, context);
+    const { data } = await Promise.race([
+      apiClient.post('/api/chat', payload),
+      new Promise((_, reject) => {
+        window.setTimeout(() => reject(new Error('AI provider timed out')), 4500);
+      }),
+    ]);
+    if (!data.answer || isProviderSetupMessage(data.answer)) {
+      return getLocalDashboardAnswer(question, context, data.answer || 'AI provider unavailable');
+    }
+    return data.answer;
   } catch (serverError) {
     return getLocalDashboardAnswer(question, context, serverError.message);
   }
+}
+
+function isProviderSetupMessage(answer) {
+  return /token is not configured|provider is unavailable|ai service is unavailable|ai request failed/i.test(answer);
 }
 
 export function getLocalDashboardAnswer(question, context, providerMessage = '') {

@@ -28,7 +28,10 @@ export default async function handler(request, response) {
 
   const token = process.env.AI_TOKEN || process.env.VITE_AI_TOKEN;
   if (!token) {
-    response.status(200).json({ answer: 'AI token is not configured. I can only answer after VITE_AI_TOKEN or AI_TOKEN is set.' });
+    response.status(200).json({
+      answer: 'AI provider is unavailable because the Hugging Face token is not configured.',
+      providerAvailable: false,
+    });
     return;
   }
 
@@ -40,7 +43,7 @@ export default async function handler(request, response) {
         inputs: buildPrompt(question, context),
         parameters: { max_new_tokens: 220, temperature: 0.2, return_full_text: false },
       },
-      { headers: { Authorization: `Bearer ${token}` }, timeout: 25000 },
+      { headers: { Authorization: `Bearer ${token}` }, timeout: 9000 },
     );
     const answer = Array.isArray(data) ? data[0]?.generated_text?.trim() : data.generated_text?.trim();
     response.status(200).json({ answer: answer || 'I can only answer questions related to the ISS tracker and news dashboard.' });
